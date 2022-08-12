@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+      .is-done {
+        text-decoration: line-through;
+      }
+
+      li span {
+        display: inline-block;
+        margin-left: 12px;
+      }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+    <script>
+        const TODOS = [
+          {
+            id: 1,
+            title: 'Todo 1',
+            done: false,
+          },
+          {
+            id: 2,
+            title: 'Todo 2',
+            done: false,
+          },
+        ];
+
+        const e = React.createElement;
+
+        function TodoList(props) {
+          const state = React.useState(props.items);
+
+          const items = state[0];
+          const setItems = state[1];
+
+          function setStatus(id) {
+            setItems((prevState) => {
+              const newState = prevState.map(function(obj) {
+                if (obj.id === id) {
+                  return { ...obj, done: !obj.done };
+                }
+
+                return obj;
+              });
+
+              return newState;
+            });
+          };
+
+          return e(
+            'ul',
+            null,
+            items.map((item) =>
+              e(TodoItem, {
+                key: item.id,
+                item: item,
+                onClickItem: setStatus,
+              }),
+            ),
+          );
+        }
+
+        function TodoItem({ item, onClickItem }) {
+          return e(
+            'li',
+            {
+              className: item.done ? 'is-done' : '',
+              onClick: function() {
+                  onClickItem(item.id);
+              },
+            },
+            item.title,
+          );
+        }
+
+        function App() {
+          return e(
+            'div',
+            {
+              className: 'app',
+            },
+            e(TodoList, { items: TODOS }),
+          );
+        }
+
+        const domContainer = document.querySelector('#root');
+        const root = ReactDOM.createRoot(domContainer);
+
+        root.render(e(App));
+    </script>
+</body>
+</html>
