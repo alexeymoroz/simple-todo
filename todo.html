@@ -46,7 +46,7 @@
           const setItems = state[1];
 
           function setStatus(id) {
-            setItems((prevState) => {
+            setItems(function(prevState) {
               const newState = prevState.map(function(obj) {
                 if (obj.id === id) {
                   return { ...obj, done: !obj.done };
