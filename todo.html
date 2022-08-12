@@ -62,17 +62,20 @@
           return e(
             'ul',
             null,
-            items.map((item) =>
-              e(TodoItem, {
+            items.map(function(item) {
+              return e(TodoItem, {
                 key: item.id,
                 item: item,
                 onClickItem: setStatus,
-              }),
-            ),
+              })
+            })
           );
         }
 
-        function TodoItem({ item, onClickItem }) {
+        function TodoItem(props) {
+          const item = props.item;
+          const onClickItem = props.onClickItem;
+
           return e(
             'li',
             {
